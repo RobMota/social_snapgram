@@ -340,17 +340,31 @@ export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
   }
 }
 
-
 export async function searchPosts(searchTerm: string) {
   try {
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.search('caption', searchTerm)]
+      [Query.search("caption", searchTerm)]
     );
-    if (!posts) throw Error; 
+    if (!posts) throw Error;
 
     return posts;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getCreators() {
+  try {
+    const creators = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      [Query.orderAsc('createdAt')]
+    );
+    if (!creators) throw Error;
+
+    return creators;
   } catch (error) {
     console.log(error);
   }
