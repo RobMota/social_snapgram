@@ -78,12 +78,12 @@ const Explore = () => {
         ) : shouldShowPosts ? (
           <p className="text-light-4 mt-10 text-center w-full">End of posts</p>
         ) : (
-          posts.page.map((item, index) => (
+          posts.pages.map((item, index) => (
             <GridPostList key={`page-${index}`} posts={item.documents} />
           ))
         )}
       </div>
-      {hasNextPage && !searchValue && (
+      {!hasNextPage && !searchValue && (
         <div ref={ref} className="mt-10">
           <Loader />
         </div>

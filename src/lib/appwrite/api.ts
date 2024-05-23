@@ -204,8 +204,6 @@ export async function likePost(postId: string, likesArray: string[]) {
 }
 
 export async function savePost(postId: string, userId: string) {
-  console.log(postId);
-  console.log(userId);
   try {
     const updatedPost = await databases.createDocument(
       appwriteConfig.databaseId,
@@ -319,19 +317,14 @@ export async function deletePost(postId: string, imageId: string) {
   }
 }
 
-export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
-  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(10)];
-
-  if (pageParam) {
-    queries.push(Query.cursorAfter(pageParam.toString()));
-  }
-
+export async function getInfinitePosts(pageParam: { pageParam: number }) {
   try {
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      queries
+      [Query.orderDesc("$updatedAt"), Query.limit(10)]
     );
+
     if (!posts) throw Error;
 
     return posts;
@@ -360,11 +353,30 @@ export async function getCreators() {
     const creators = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
-      [Query.orderAsc('createdAt')]
+      [Query.orderAsc("$createdAt")]
     );
     if (!creators) throw Error;
 
     return creators;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getSavedPosts() {
+  try {
+    const currentAccount = await account.get();
+    if (!currentAccount) throw Error;
+
+    const currentUser = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      [Query.equal("accountId", currentAccount.$id)]
+    );
+
+    if (!currentUser) throw Error;
+
+    return currentUser.documents[0];
   } catch (error) {
     console.log(error);
   }

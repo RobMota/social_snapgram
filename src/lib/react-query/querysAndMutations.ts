@@ -8,6 +8,7 @@ import {
   getInfinitePosts,
   getPostById,
   getRecentPosts,
+  getSavedPosts,
   likePost,
   savePost,
   searchPosts,
@@ -174,14 +175,13 @@ export const useDeletePost = () => {
 export const useGetPosts = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
-    queryFn: getInfinitePosts() as any,
+    queryFn: (pageParam) => getInfinitePosts(pageParam),
+    initialPageParam: 1,
     getNextPageParam: (lastPage: any) => {
-      // If there's no data, there are no more pages.
-      if (lastPage && lastPage.documents.length === 0) {
+      if (lastPage && lastPage.documents.total === 0) {
         return null;
       }
 
-      // Use the $id of the last document as the cursor.
       const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
       return lastId;
     },
@@ -200,5 +200,12 @@ export const useGetCreator = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_USERS],
     queryFn: getCreators,
+  });
+};
+
+export const useGetSavedPosts = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+    queryFn: getSavedPosts,
   });
 };
