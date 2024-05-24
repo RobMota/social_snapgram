@@ -4,14 +4,20 @@ import Loader from "./Loader";
 
 type SearchResultProps = {
   isSearchFetching: boolean;
-  searchedPosts: Models.Document[];
+  searchedPosts: Models.Document;
 };
 
 const SearchResults = ({
   isSearchFetching,
   searchedPosts,
 }: SearchResultProps) => {
-  if (isSearchFetching) return <Loader />;
+  if (isSearchFetching) {
+    return (
+      <div className="flex-center w-full h-full">
+        <Loader />
+      </div>
+    );
+  }
   if (searchedPosts && searchedPosts.documents.length > 0) {
     return <GridPostList posts={searchedPosts.documents} />;
   }

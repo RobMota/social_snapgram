@@ -15,7 +15,9 @@ const Saved = () => {
   return (
     <div className="common-container">
       {isPending ? (
-        <Loader />
+        <div className="flex-center w-full h-full">
+          <Loader />
+        </div>
       ) : (
         <div className="user-container">
           <div className="max-w-5xl flex-start gap-3 justify-start w-full">

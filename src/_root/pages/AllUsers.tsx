@@ -9,7 +9,9 @@ const AllUsers = () => {
       <div className="user-container">
         <h2 className="h3-bold md:h2-bold text-left w-full">All Users</h2>
         {isPending && !creators ? (
-          <Loader />
+          <div className="flex-center w-full h-full">
+            <Loader />
+          </div>
         ) : (
           <ul className="user-grid">
             {creators?.documents.map((creator) => (

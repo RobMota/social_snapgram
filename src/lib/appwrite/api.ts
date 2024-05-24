@@ -338,7 +338,7 @@ export async function searchPosts(searchTerm: string) {
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.search("caption", searchTerm)]
+      [Query.search("tags", searchTerm)]
     );
     if (!posts) throw Error;
 

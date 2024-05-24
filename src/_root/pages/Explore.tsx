@@ -13,9 +13,10 @@ import GridPostList from "./GridPostList";
 const Explore = () => {
   const { ref, inView } = useInView();
   const { data: posts, fetchNextPage, hasNextPage } = useGetPosts();
+  
   const [searchValue, setSearchValue] = useState("");
 
-  const debauncedValue = useDebounce(searchValue, 500);
+  const debauncedValue = useDebounce(searchValue, 1000);
   const { data: searchedPosts, isFetching: isSearchFetching } =
     useSearchPosts(debauncedValue);
 
